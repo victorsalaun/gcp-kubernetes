@@ -2,4 +2,5 @@
 # Network
 #--------------------------------------------------------------
 
+network_cidr = "10.0.0.0/16"
 network_name = "kubernetes-network"
