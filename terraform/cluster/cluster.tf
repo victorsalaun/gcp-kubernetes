@@ -1,6 +1,7 @@
 variable "cluster_name" {}
 variable "cluster_location" {}
 
+variable "cluster_node_one_count" {}
 variable "cluster_node_one_machine_type" {}
 variable "cluster_node_one_name" {}
 
@@ -25,5 +26,18 @@ resource "google_container_cluster" "cluster" {
     client_certificate_config {
       issue_client_certificate = false
     }
+  }
+}
+
+resource "google_container_node_pool" "cluster_node_one" {
+  name     = var.cluster_node_one_name
+  cluster  = google_container_cluster.cluster.name
+  location = google_container_cluster.cluster.location
+
+  node_count = var.cluster_node_one_count
+
+  node_config {
+    preemptible  = true
+    machine_type = var.cluster_node_one_machine_type
   }
 }
