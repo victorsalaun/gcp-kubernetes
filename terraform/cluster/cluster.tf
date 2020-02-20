@@ -59,6 +59,10 @@ resource "google_container_node_pool" "cluster_node_admin" {
   node_config {
     preemptible  = false
     machine_type = var.cluster_node_admin_machine_type
+
+    labels = {
+      "node-role.kubernetes.io/${var.cluster_node_admin_name}" = var.cluster_node_admin_name
+    }
   }
 }
 
@@ -82,6 +86,10 @@ resource "google_container_node_pool" "cluster_node_default" {
   node_config {
     preemptible  = true
     machine_type = var.cluster_node_default_machine_type
+
+    labels = {
+      "node-role.kubernetes.io/${var.cluster_node_default_name}" = var.cluster_node_default_name
+    }
   }
 }
 
