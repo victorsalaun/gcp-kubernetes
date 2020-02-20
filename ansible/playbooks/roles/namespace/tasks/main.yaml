@@ -1,0 +1,9 @@
+---
+
+- name: Kubernetes | Create namespaces
+  k8s:
+    name: "{{ item }}"
+    api_version: v1
+    kind: Namespace
+    state: present
+  with_items: "{{ cluster_namespaces }}"

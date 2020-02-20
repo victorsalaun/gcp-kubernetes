@@ -1,0 +1,19 @@
+---
+
+- hosts: localhost
+
+  pre_tasks:
+
+    - name: Precondition checks | Check Targeted Cluster
+      shell: echo $(kubectl config current-context)
+      register: context
+      failed_when: "'kubernetes-cluster' not in context.stdout"
+      tags:
+        - always
+
+  roles:
+
+    - role: namespace
+      tags:
+        - all
+        - namespace
