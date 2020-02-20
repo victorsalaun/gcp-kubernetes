@@ -63,6 +63,12 @@ resource "google_container_node_pool" "cluster_node_admin" {
     labels = {
       "node-role.kubernetes.io/${var.cluster_node_admin_name}" = var.cluster_node_admin_name
     }
+
+    taint {
+      key    = "ProtectedNodes"
+      value  = "AdminNodes"
+      effect = "NO_SCHEDULE"
+    }
   }
 }
 
