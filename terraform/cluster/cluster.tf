@@ -7,6 +7,12 @@ variable "cluster_node_admin_name" {}
 variable "cluster_node_admin_max_node_count" {}
 variable "cluster_node_admin_min_node_count" {}
 
+variable "cluster_node_default_count" {}
+variable "cluster_node_default_machine_type" {}
+variable "cluster_node_default_name" {}
+variable "cluster_node_default_max_node_count" {}
+variable "cluster_node_default_min_node_count" {}
+
 data "google_container_engine_versions" "gce_version_location" {
   location = var.cluster_location
 }
@@ -53,6 +59,29 @@ resource "google_container_node_pool" "cluster_node_admin" {
   node_config {
     preemptible  = false
     machine_type = var.cluster_node_admin_machine_type
+  }
+}
+
+resource "google_container_node_pool" "cluster_node_default" {
+  name     = var.cluster_node_default_name
+  cluster  = google_container_cluster.cluster.name
+  location = google_container_cluster.cluster.location
+
+  node_count = var.cluster_node_default_count
+
+  autoscaling {
+    min_node_count = var.cluster_node_default_min_node_count
+    max_node_count = var.cluster_node_default_max_node_count
+  }
+
+  management {
+    auto_upgrade = true
+    auto_repair  = true
+  }
+
+  node_config {
+    preemptible  = true
+    machine_type = var.cluster_node_default_machine_type
   }
 }
 
